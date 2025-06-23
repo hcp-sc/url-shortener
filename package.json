@@ -23,7 +23,8 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "express": "^5.1.0"
-  },
-  "devDependencies": {}
+    "body-parser": "^2.2.0",
+    "express": "^5.1.0",
+    "nanoid": "^5.1.5"
+  }
 }
