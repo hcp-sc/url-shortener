@@ -1,0 +1,29 @@
+{
+  "name": "url-shortener",
+  "version": "0.0.1",
+  "description": "A simple URL shortener made with Express + NodeJS",
+  "keywords": [
+    "url",
+    "shortener",
+    "urlshortener"
+  ],
+  "homepage": "https://github.com/hcp-sc/url-shortener#readme",
+  "bugs": {
+    "url": "https://github.com/hcp-sc/url-shortener/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hcp-sc/url-shortener.git"
+  },
+  "license": "MIT",
+  "author": "s0urce-c0de",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  },
+  "devDependencies": {}
+}
