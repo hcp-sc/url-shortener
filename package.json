@@ -17,7 +17,7 @@
   },
   "license": "MIT",
   "author": "s0urce-c0de",
-  "type": "commonjs",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
