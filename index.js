@@ -27,10 +27,10 @@ app.post('/shorten', (req, res) => {
 app.get('/:shortURL', (req, res) => {
   const shortURL = req.params.shortURL;
   const urls = JSON.parse(fs.readFileSync(DATA_FILE));
-  console.log(urls[shortURL])
+
   const originalUrl = urls[shortURL];
   if (originalUrl) {
-    return res.redirect(originalUrl);
+    return res.redirect(302, originalUrl);
   } else {
     return res.status(404).send('uh oh! you made a type o!');
   }
