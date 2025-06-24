@@ -1,4 +1,4 @@
-import { loadFile } from './proxyjson.js';
+import { loadFile } from './database_mgmt/sqlite.mjs';
 import bodyParser from 'body-parser';
 import express from 'express';
 import { nanoid } from 'nanoid';
@@ -11,7 +11,7 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = 3000;
 const DATA_FILE = path.join(__dirname, 'urls.json');
-const urls = loadFile(DATA_FILE);
+const urls = await loadFile(DATA_FILE);
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());

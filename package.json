@@ -23,9 +23,12 @@
     "start": "node index.js"
   },
   "dependencies": {
+    "@sequelize/sqlite3": "^7.0.0-alpha.46",
+    "better-sqlite3": "^12.1.0",
     "body-parser": "^2.2.0",
     "express": "^5.1.0",
     "fs-ext": "^2.1.1",
-    "nanoid": "^5.1.5"
+    "nanoid": "^5.1.5",
+    "sequelize": "^6.37.7"
   }
 }
