@@ -16,6 +16,7 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = env.PORT??3000;
+const HOST = env.HOST??"0.0.0.0"
 const DATA_FILE = path.join(__dirname, env.FILENAME??'urls.sqlite');
 const NOUI = env.NOUI;
 const REDIRECTURI = env.REDIRECTURI;
@@ -102,6 +103,6 @@ app.get('/:shortURL', (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, HOST, () => {
   console.log(`Server on 127.0.0.1:${PORT} (womp womp windows user idk if it works, idgaf)`);
 });
