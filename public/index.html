@@ -6,6 +6,16 @@
     <link rel="stylesheet" href="style.css">
     <title>Shorty!</title>
     <script>
+      /**
+       * A simple command to generate an element that has a more info thing.
+       *  
+       * @param {string} regular - what to show without the jsdoc
+       * @param {string} [moreinfo] - what to show when you click more info
+       * @returns {HTMLSpanElement} - The html element you want to append
+       * 
+       * @example
+       * document.body.appendChild(moreInfo("This is an example text.", "Now, you clicked More Info... There is no more info."))
+       */
       function moreInfo(regular, moreinfo) {
         const container = document.createElement("span");
 
@@ -16,28 +26,28 @@
         )
 
         if(moreinfo){
-        const moreSpan = document.createElement('span');
-        moreSpan.textContent = moreinfo;
-        moreSpan.style.display='none'
-        container.appendChild(moreSpan);
+          const moreSpan = document.createElement('span');
+          moreSpan.textContent = moreinfo;
+          moreSpan.style.display='none'
+          container.appendChild(moreSpan);
 
-        const toggleLink = document.createElement('a')
-        toggleLink.textContent = 'Show more'
-        toggleLink.href="#"
-        Object.assign(toggleLink.style, {
-          marginLeft: '5px',
-          color: 'blue',
-          textDecoration: 'underline',
-          cursor: 'pointer',
-        });
+          const toggleLink = document.createElement('a')
+          toggleLink.textContent = 'Show more'
+          toggleLink.href="#"
+          Object.assign(toggleLink.style, {
+            marginLeft: '5px',
+            color: 'blue',
+            textDecoration: 'underline',
+            cursor: 'pointer',
+          });
 
-        toggleLink.addEventListener('click', e => {
-          e.preventDefault();
-          const isHidden = moreSpan.style.display === 'none';
-          moreSpan.style.display = isHidden ? 'inline' : 'none';
-          toggleLink.textContent = isHidden ? 'Show less' : 'Show more';
-        });
-        container.appendChild(toggleLink);
+          toggleLink.addEventListener('click', e => {
+            e.preventDefault();
+            const isHidden = moreSpan.style.display === 'none';
+            moreSpan.style.display = isHidden ? 'inline' : 'none';
+            toggleLink.textContent = isHidden ? 'Show less' : 'Show more';
+          });
+          container.appendChild(toggleLink);
         }
 
         return container;
