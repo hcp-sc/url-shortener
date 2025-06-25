@@ -1,0 +1,1 @@
+INSERT INTO links (id, fulllink, expiry) VALUES (@id, @fulllink, @expiry)

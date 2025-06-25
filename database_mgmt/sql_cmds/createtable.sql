@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS links (
+  id TEXT PRIMARY KEY,
+  fulllink TEXT NOT NULL,
+  expiry DATE DEFAULT NULL 
+)

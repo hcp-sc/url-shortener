@@ -10,7 +10,7 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = 3000;
-const DATA_FILE = path.join(__dirname, 'urls.json');
+const DATA_FILE = path.join(__dirname, 'urls.sqlite');
 const urls = await loadFile(DATA_FILE);
 
 app.use(bodyParser.urlencoded({ extended: true }));

@@ -1,0 +1,81 @@
+@import url(mplus.css);
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: #323232;
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  color: #fff;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#top {
+  padding: 4em 2em;
+  width: 100%;
+  text-align: center;
+  background-color: #e85353;
+  border-bottom: 1px dashed #fff;
+  box-sizing: border-box;
+}
+
+#top h1 {
+  font-size: 3rem;
+  margin: 0 0 0.25em 0;
+}
+
+#top h3 {
+  font-weight: 400;
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+main {
+  flex-grow: 1;
+  width: 100%;
+  max-width: 400px;
+  margin: 3em auto 0 auto;
+  padding: 0 1em;
+  box-sizing: border-box;
+}
+
+#shortener {
+  background-color: #fff;
+  border: 0.5em solid #000;
+  border-radius: 50px;
+  padding: 2em;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+#shortener input {
+  padding: 0.75em 1em;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 25px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+#shortener input:focus {
+  border-color: #e85353;
+}
+
+#shortener button {
+  background-color: #e85353;
+  border: none;
+  border-radius: 25px;
+  padding: 0.75em 0;
+  font-size: 1.2rem;
+  color: white;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+#shortener button:hover {
+  background-color: #d14747;
+}
