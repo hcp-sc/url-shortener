@@ -1,32 +1,61 @@
+/**
+ * @typedef {import('express').Request} Request
+ * @typedef {import('express').Response} Response
+ */
 import { loadFile } from './database_mgmt/sqlite.mjs';
-import bodyParser from 'body-parser';
 import express from 'express';
 import { nanoid } from 'nanoid';
 import path from 'path';
+import { env } from 'process';
 import { fileURLToPath } from 'url';
+import multer from 'multer';
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const PORT = 3000;
-const DATA_FILE = path.join(__dirname, 'urls.sqlite');
+const PORT = env.PORT??3000;
+const DATA_FILE = path.join(__dirname, env.FILENAME??'urls.sqlite');
+const NOUI = env.NOUI;
+const REDIRECTURI = env.REDIRECTURI;
 const urls = await loadFile(DATA_FILE);
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
+/**
+ * What to do on errrs.
+ * 
+ * @param {Request} req - Request
+ * @param {Response} res - Response
+ * @returns {void}
+ */
+function redirect(req, res) {
+  try {
+    new URL(REDIRECTURI);
+    res.redirect(301, REDIRECTURI)
+  } catch {
+    req.socket.destroy()
+  }
+}
 
-app.post('/shorten', (req, res) => {
+if(!NOUI)app.use(express.static(path.join(__dirname, 'public')));
+else app.get("/",redirect)
+
+app.post('/shorten', multer().none(), (req, res) => {
+  console.log(req)
+  if(NOUI)return redirect(req,res);
+  if(!req.body.url)return req.socket.close();
   const urlToShorten = req.body.url;
   let shortUrlId = req.body.linkid;
+  let expiry = req.body.expiry;
+  console.log(expiry)
   if(shortUrlId.length>20) res.status.status(400).send(JSON.stringify({
     message: "URL that was shortened was too long.",
     extra: shortUrlId + "was too long."
   }));
 
+  let url;
   try {
-    let url = new URL(urlToShorten);
+    url = new URL(urlToShorten);
   } catch {
     return res.status(400).send(JSON.stringify({message: "Could not parse URL."}));
   }
@@ -47,18 +76,29 @@ app.post('/shorten', (req, res) => {
     extra: shortUrlId + "was already taken."
   }));
 
-  urls[shortUrlId] = urlToShorten;
+  urls[shortUrlId] = {
+    fulllink: urlToShorten,
+    expiry: expiry
+  };
 
-  return res.send(`http://localhost:${PORT}/${shortUrlId}`);
+  return res.send(JSON.stringify({
+    message: shortUrlId
+  }));
 });
 
 app.get('/:shortURL', (req, res) => {
-  const originalUrl = urls[req.params.shortURL];
-  
+  if(req.params.shortURL==="shorten")return;
+  const data = urls[req.params.shortURL];
+  const originalUrl = data?.fulllink;
+
   if (originalUrl) {
+    if(Date.now()>(new Date(data?.expiry).getTime())) {
+      delete urls[req.params.shortURL];
+      return res.status(418).sendFile(path.resolve(__dirname, 'public', 'teapot.html'))
+    }
     return res.redirect(307, originalUrl);
   } else {
-    return res.status(404).send('uh oh! you made a type o!');
+    return redirect(req, res);
   }
 });
 

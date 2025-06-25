@@ -28,6 +28,7 @@
     "body-parser": "^2.2.0",
     "express": "^5.1.0",
     "fs-ext": "^2.1.1",
+    "multer": "^2.0.1",
     "nanoid": "^5.1.5",
     "sequelize": "^6.37.7"
   }

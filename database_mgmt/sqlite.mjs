@@ -6,7 +6,6 @@ import Database from "better-sqlite3";
 import path from "path";
 import fs from 'fs/promises';
 import { fileURLToPath } from "url";
-import { table } from "console";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -22,9 +21,9 @@ async function loadSQL(db, filename) {
   return db.prepare(
     (await fs.readFile(path.resolve(
       __dirname,
-      'sql_commands',
+      'sql_cmds',
       filename
-    ))).trim()
+    ))).toString().trim()
   )
 }
 
@@ -43,7 +42,7 @@ async function loadSQL(db, filename) {
  */
 function determinePkey(db, tableName){
   const getColumns = tbl => db.prepare(`PRAGMA table_info(${tbl})`).all();
-  let pk, valueColumns;
+  let pk;
   if(tableName) {
     const columns = getColumns(tableName);
     if(!columns.length)throw new TypeError(`Table ${tableName} has no columns (or is nonexistent).`);
@@ -100,12 +99,10 @@ function convertKey(key, pkType) {
  */
 async function loadFile(filename) {
   const db = new Database(filename);
-  const addRow = await loadSQL(db, "addrow.sql")
-  const createTable = await loadSQL(db, "createtable.sql");
+  const createTable = await loadSQL(db, "createtable.sql");createTable.run()
+  const addRow = await loadSQL(db, "addrow.sql");
   const deleteRow = await loadSQL(db, "deleterow.sql");
   const getRow = await loadSQL(db, "getrow.sql");
-
-  createTable.run();
 
   const { tableName, pk, pkType, valueColumns } = determinePkey(db);
 
@@ -118,6 +115,7 @@ async function loadFile(filename) {
       if (typeof property !== "string" || typeof value !== "object" || value === null) return false;
       const row = { [pk]: convertKey(property, pkType) };
       for (const {name, type} of valueColumns) {
+        if(name===pk)continue;
         const raw = value[name];
         if (raw === undefined) {
           row[name] = null;
@@ -125,6 +123,7 @@ async function loadFile(filename) {
           row[name] = convertKey(raw, type);
         }
       }
+
       addRow.run(row);
       return true;
     },

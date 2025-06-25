@@ -5,32 +5,109 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <title>Shorty!</title>
+    <script>
+      function moreInfo(regular, moreinfo) {
+        const container = document.createElement("span");
+
+        container.appendChild(
+          Object.assign(document.createElement("span"), {
+            textContent: regular + ' '
+          })
+        )
+
+        if(moreinfo){
+        const moreSpan = document.createElement('span');
+        moreSpan.textContent = moreinfo;
+        moreSpan.style.display='none'
+        container.appendChild(moreSpan);
+
+        const toggleLink = document.createElement('a')
+        toggleLink.textContent = 'Show more'
+        toggleLink.href="#"
+        Object.assign(toggleLink.style, {
+          marginLeft: '5px',
+          color: 'blue',
+          textDecoration: 'underline',
+          cursor: 'pointer',
+        });
+
+        toggleLink.addEventListener('click', e => {
+          e.preventDefault();
+          const isHidden = moreSpan.style.display === 'none';
+          moreSpan.style.display = isHidden ? 'inline' : 'none';
+          toggleLink.textContent = isHidden ? 'Show less' : 'Show more';
+        });
+        container.appendChild(toggleLink);
+        }
+
+        return container;
+      }
+
+      document.addEventListener("DOMContentLoaded", ()=>{
+        document.getElementById("expiry").valueAsDate = new Date(Math.round((Date.now()+7*24*60*60*1000)/60000)*60000);
+        document.getElementById("expiry").setAttribute("min", new Date(Date.now()+24*60*60*1000).toISOString().split(':').slice(0,2).join(':'))
+        document.getElementById("shortener").addEventListener("submit", e=>{
+          e.preventDefault();
+
+          const formData = new FormData(e.target);
+          console.log(formData);
+          const xhr = new XMLHttpRequest();
+          xhr.open("POST", "/shorten");
+
+          xhr.onload = e => {
+            const output = document.getElementById("output");
+            const resp = JSON.parse(xhr.responseText);
+            if (xhr.status == 200) {
+              try {
+                const short = new URL(location);
+                short.pathname="/"+resp.message
+                output.innerText="URL generated! " + short.toString()
+              } catch (e) {
+                moreInfo("An error occured!", e.toString())
+              }
+            } else {
+              output.innerHTML=""
+              output.appendChild(moreInfo(resp.message, resp.extra))
+            }
+          }
+
+          xhr.send(formData)
+
+          return false;
+        });
+      });
+      </script>
   </head>
   <body>
     <div id="top">
       <h1>Shorty!</h1>
       <h3>The Best Open-Source URL Shortener around</h3>
+      <h3>Makes URLs shorter than you!</h3>
     </div>
     <main>
-      <div id="shoretner">
-        <form action="/shorten" method="POST" id="shortener">
-          <input
-            type="url"
-            name="url"
-            id="url"
-            placeholder="Enter URL to shorten"
-            required
-          />
-          <input
-            type="text"
-            name="linkid"
-            id="linkid"
-            placeholder="Optional: Custom Link"
-            maxlength="20"
-          />
-          <button type="submit">Shorten</button>
-        </form>
-      </div>
+      <form action="/shorten" method="POST" id="shortener">
+        <input
+          type="url"
+          name="url"
+          id="url"
+          placeholder="Enter URL to shorten"
+          required
+        />
+        <input
+          type="text"
+          name="linkid"
+          id="linkid"
+          placeholder="Optional: Custom Link"
+          maxlength="20"
+        />
+        <input
+          type="datetime-local"
+          name="expiry"
+          id="expiry"
+        >
+        <button type="submit">Shorten</button>
+        <span id="output"></span>
+      </form>
     </main>
   </body>
 </html>
