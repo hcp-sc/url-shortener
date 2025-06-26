@@ -12,4 +12,7 @@ REDIRECTURI: uri to redirect to when it is a 404 or NOUI is enabled.
 ```
 
 ## How do i use?
+
 see the demo.mov
+
+https://github.com/user-attachments/assets/b7d55ea0-b11d-4c04-9f7e-b3d497a945bf
