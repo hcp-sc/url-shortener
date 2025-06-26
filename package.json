@@ -20,7 +20,7 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "npm i && node index.js"
   },
   "dependencies": {
     "@sequelize/sqlite3": "^7.0.0-alpha.46",
