@@ -127,3 +127,6 @@ dist
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+# package-lock
+package-lock.json
