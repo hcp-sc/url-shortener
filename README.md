@@ -1,3 +1,9 @@
+# WINDOWS IS NOT SUPPORTED
+# I DONT KNOW IF WSL WORKS, DONT ASK
+# HAS ONLY BEEN TESTED ON MAC AND LINUX
+# THERE IS AN UNTESTED WORKAROUND, IF YOU REALLY NEED IT (SEE THE BOTTOM)
+
+
 # Shorty!
 
 ## Config
@@ -37,6 +43,16 @@ If you use the node path to launch, rembember to use `npm i` to install dependen
 
 ## Shucks :(. it still won't work!
 
+If it gives you an error building fs ext, i just remove node_modules and package-lock and build anew. If it is windows, see the bottom.
+
 If you are the hackclub reviewer, please give me the feedback on there.
 
 Otherwise, make an issue and i will do my best to help!
+
+
+## i am a loser and i use windows. how do i use?
+Well since fs-ext requires linux, just install all the packages except fs-ext.
+The command is:
+```
+npm i better-sqlite3 express multer nanoid.
+```
