@@ -5,7 +5,6 @@
 
 
 # Shorty!
-
 ## Config
 
 The configuration is simple. Enviornment Vars:
@@ -22,6 +21,9 @@ REDIRECTURI: uri to redirect to when it is a 404 or NOUI is enabled.
 see the demo.mov
 
 https://github.com/user-attachments/assets/b7d55ea0-b11d-4c04-9f7e-b3d497a945bf
+
+## Connection Closed
+it means that either you tried to get a nonexistent. it could also mean that you sent an invalid request (grr why would you ever do this).
 
 ## It gives an error :(. Now im sad
 

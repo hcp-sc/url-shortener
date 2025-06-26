@@ -42,13 +42,12 @@ if(!NOUI)app.use(express.static(path.join(__dirname, 'public')));
 else app.get("/",redirect)
 
 app.post('/shorten', multer().none(), (req, res) => {
-  console.log(req)
   if(NOUI)return redirect(req,res);
-  if(!req.body.url)return req.socket.close();
+  if(!req?.body?.url)return res.status(400).send(JSON.stringify({message: "No URL provided (or the backend failed as usual)"}));
   const urlToShorten = req.body.url;
   let shortUrlId = req.body.linkid;
   let expiry = req.body.expiry;
-  console.log(expiry)
+
   if(shortUrlId.length>20) res.status.status(400).send(JSON.stringify({
     message: "URL that was shortened was too long.",
     extra: shortUrlId + "was too long."
@@ -88,7 +87,7 @@ app.post('/shorten', multer().none(), (req, res) => {
 });
 
 app.get('/:shortURL', (req, res) => {
-  if(req.params.shortURL==="shorten")return;
+  if(req.params?.shortURL==="shorten")return;
   const data = urls[req.params.shortURL];
   const originalUrl = data?.fulllink;
 
@@ -104,5 +103,5 @@ app.get('/:shortURL', (req, res) => {
 });
 
 app.listen(PORT, HOST, () => {
-  console.log(`Server on 127.0.0.1:${PORT} (womp womp windows user idk if it works, idgaf)`);
+  console.log(`Server on ${HOST}:${PORT} (womp womp windows user idk if it works, idgaf)`);
 });
