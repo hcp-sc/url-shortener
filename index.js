@@ -43,7 +43,7 @@ else app.get("/",redirect)
 
 app.post('/shorten', multer().none(), (req, res) => {
   if(NOUI)return redirect(req,res);
-  if(!req?.body?.url)return res.status(400).send(JSON.stringify({message: "No URL provided (or the backend failed as usual)"}));
+  if(!req.body?.url)return res.status(400).send(JSON.stringify({message: "No URL provided (or the backend failed as usual)"}));
   const urlToShorten = req.body.url;
   let shortUrlId = req.body.linkid;
   let expiry = req.body.expiry;
